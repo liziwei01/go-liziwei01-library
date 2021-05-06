@@ -32,3 +32,4 @@ func GetMysqlClient(ctx context.Context, serviceName string) (mysql.Client, erro
 	}
 	return nil, fmt.Errorf("cannot find db")
 }
+
