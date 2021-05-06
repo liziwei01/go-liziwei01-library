@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/go-liziwei01-library/library/mysql"
+	"github.com/liziwei01/go-liziwei01-library/library/mysql"
 )
 
 const (

@@ -2,9 +2,9 @@
 echo "alias ll='ls -al'" >> ~/.bashrc
 source ~/.bashrc
 
-mv /home/work/github.com/go-liziwei01-library/commit-msg /home/work/github.com/go-liziwei01-library/.git/hooks/
-chmod u+x /home/work/github.com/go-liziwei01-library/.git/hooks/commit-msg
+mv /home/work/github.com/liziwei01/go-liziwei01-library/commit-msg /home/work/github.com/liziwei01/go-liziwei01-library/.git/hooks/
+chmod u+x /home/work/github.com/liziwei01/go-liziwei01-library/.git/hooks/commit-msg
 
 hostname -i
 
-go run /home/work/github.com/go-liziwei01-library/main.go
+go run /home/work/github.com/liziwei01/go-liziwei01-library/main.go

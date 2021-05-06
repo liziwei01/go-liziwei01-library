@@ -1,4 +1,4 @@
-module github.com/go-liziwei01-library
+module github.com/liziwei01/go-liziwei01-library
 
 go 1.15
 

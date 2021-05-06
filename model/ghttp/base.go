@@ -3,7 +3,7 @@ package ghttp
 import (
 	"net/http"
 
-	errBase "github.com/go-liziwei01-library/model/error"
+	errBase "github.com/liziwei01/go-liziwei01-library/model/error"
 )
 
 type (
