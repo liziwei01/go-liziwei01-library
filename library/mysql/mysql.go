@@ -17,6 +17,8 @@ type Client interface {
 	DbPort() string
 	UserName() string
 	UserPassword() string
+	Query(ctx context.Context, tableName string, where map[string]interface{}, columns []string, data interface{}) error
+	Insert(ctx context.Context, tableName string, data map[string]interface{}) error
 }
 
 // SelectBuilder 默认的select sql builder
