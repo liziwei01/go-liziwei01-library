@@ -4,29 +4,31 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Bill-xyz/go-liziwei01-library/library/mysql"
+	"go-liziwei01-library/library/mysql"
 )
 
 const (
 	SERVICE_CONF_DB_NEWAPP_LIZIWEI = "db_liziwei01"
 	DB_DRIVER_NAME_MYSQL           = "mysql"
+	DB_IP                          = "localhost"
+	MYSQL_PORT                     = "3306"
+	USER_NAME                      = "work"
+	USER_PASSWORD                  = "liziwei01"
 )
 
 var clients []*mysql.Client
 
 func InitClients() {
-	clients = append(clients, &mysql.Client{
-		DbName:   SERVICE_CONF_DB_NEWAPP_LIZIWEI,
-		DbDriver: DB_DRIVER_NAME_MYSQL,
-	})
+	client := mysql.New(SERVICE_CONF_DB_NEWAPP_LIZIWEI, DB_DRIVER_NAME_MYSQL, DB_IP, MYSQL_PORT, USER_NAME, USER_PASSWORD)
+	clients = append(clients, &client)
 }
 
 // GetMysqlClient 获取创建
-func GetMysqlClient(ctx context.Context, serviceName string) (Client, error) {
+func GetMysqlClient(ctx context.Context, serviceName string) (mysql.Client, error) {
 	for _, v := range clients {
-		if v.dbName == serviceName {
-			return v, nil
+		if (*v).DbName() == serviceName {
+			return *v, nil
 		}
 	}
-	return &client{}, fmt.Errorf("cannot find db")
+	return nil, fmt.Errorf("cannot find db")
 }

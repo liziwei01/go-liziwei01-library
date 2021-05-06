@@ -40,6 +40,21 @@ type client struct {
 	userPassword string
 }
 
+func New(dbName string, dbDriver string, dbIp string, dbPort string, userName string, userPassword string) Client {
+	return &client{
+		dbName:       dbName,
+		dbDriver:     dbDriver,
+		dbIp:         dbIp,
+		dbPort:       dbPort,
+		userName:     userName,
+		userPassword: userPassword,
+	}
+}
+
+func NewDefault() Client {
+	return &client{}
+}
+
 func (c *client) DbName() string {
 	return c.dbName
 }
