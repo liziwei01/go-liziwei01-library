@@ -5,13 +5,18 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/liziwei01/go-liziwei01-library/httpapi"
 	"github.com/liziwei01/go-liziwei01-library/library/conf"
 	"github.com/liziwei01/go-liziwei01-library/library/env"
 	"github.com/liziwei01/go-liziwei01-library/model/mysql"
 )
 
-// Config app的配置
-// 默认对应 conf/app.toml
+const (
+	appConfPath = "./conf/app.toml"
+)
+
+// Config app's conf
+// default conf/app.toml
 type Config struct {
 	APPName string
 	IDC     string
@@ -19,7 +24,7 @@ type Config struct {
 
 	Env env.AppEnv
 
-	// http 服务的配置
+	// conf of http service
 	HTTPServer struct {
 		Listen       string
 		ReadTimeout  int // ms
@@ -28,7 +33,7 @@ type Config struct {
 	}
 }
 
-// ParserAppConfig 解析应用配置
+// ParserAppConfig
 func ParserAppConfig(filePath string) (*Config, error) {
 	confPath, err := filepath.Abs(filePath)
 	if err != nil {
@@ -38,7 +43,7 @@ func ParserAppConfig(filePath string) (*Config, error) {
 	if err := conf.Parse(confPath, &c); err != nil {
 		return nil, err
 	}
-	// 解析并设置全局信息
+	// parse and set global conf
 	rootDir := filepath.Dir(filepath.Dir(confPath))
 	opt := env.Option{
 		AppName: c.APPName,
@@ -52,14 +57,14 @@ func ParserAppConfig(filePath string) (*Config, error) {
 	return c, nil
 }
 
-// App 应用
+// App application
 type App struct {
 	ctx    context.Context
 	config *Config
 	close  func()
 }
 
-// NewApp 创建应用
+// NewApp establish an APP 
 func NewApp(ctx context.Context, c *Config) *App {
 	ctxRet, cancel := context.WithCancel(ctx)
 	app := &App{
@@ -70,13 +75,13 @@ func NewApp(ctx context.Context, c *Config) *App {
 	return app
 }
 
-// Start 启动服务
+// Start start the service
 func (app *App) Start() error {
-	// 启动路由分发
-	// httpapi.InitRouters()
-	// 启动数据库
+	// start distribute routers
+	httpapi.InitRouters()
+	// start mysql database
 	mysql.InitClients()
-	// 启动日志记录
+	// start record logs
 	// logs.InitLoggers
 	err := http.ListenAndServe(app.config.HTTPServer.Listen, nil)
 	if err != nil {

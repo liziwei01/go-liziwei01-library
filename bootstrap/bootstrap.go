@@ -10,8 +10,8 @@ import (
  * @param {*}
  * @return {*}
  */
-func Init(appConfPath string) {
-	// 解析应用配置
+func Init() {
+	// parse app.toml
 	config, err := ParserAppConfig(appConfPath)
 	if err != nil {
 		log.Fatal("ParserAppConfig failed")
@@ -19,6 +19,6 @@ func Init(appConfPath string) {
 	log.Printf("APP listening at: %s\n", config.HTTPServer.Listen)
 	app := NewApp(context.Background(), config)
 
-	// 启动APP
+	//  start APP
 	app.Start()
 }

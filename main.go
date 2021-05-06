@@ -10,6 +10,7 @@ package main
 
 import (
 	"github.com/liziwei01/go-liziwei01-library/bootstrap"
+	"github.com/liziwei01/go-liziwei01-library/httpapi"
 )
 
 /**
@@ -18,5 +19,5 @@ import (
  * @return {*}
  */
 func main() {
-	bootstrap.Init("./conf/app.toml")
+	bootstrap.Init()
 }

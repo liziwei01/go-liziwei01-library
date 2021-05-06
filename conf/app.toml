@@ -1,41 +1,34 @@
-# app.toml: 应用主配置文件
+# app.toml: app main conf
  
-# 应用名称，代码里可通过 env.AppName() 方法读取到
+# can be read by env.AppName() method
 APPName = "github.com/liziwei01/go-liziwei01-library"
  
-# 运行模式，可配置值：
-# debug    : 调试，    对应常量 env.RunModeDebug
-# test     : 测试，    对应常量 env.RunModeTest
-# release  : 线上发布， 对应常量 env.RunModeRelease
-# 程序代码可以通过 env.RunMode() 获取该值
-# 详见 http://icode.baidu.com/repos/baidu/gdp/env/tree/master
+# run mod
+# debug    : corresponds to env.RunModeDebug
+# test     : corresponds to env.RunModeTest
+# release  : corresponds to env.RunModeRelease
+# can be read by env.RunMode()
 RunMode = "test"
  
-# HTTPServer 的配置
+# conf of HTTPServer 
 [HTTPServer]
  
-# http server 监听的端口
-# 配置的 {env.LISTEN_PORT|8080} 的含义：
-# 先尝试从系统的环境变量里读取key=LISTEN_PORT的环境变量值，若不存在或者为空，使用默认值8080
-# 代码上线时，可以配置为 {env.LISTEN_PORT|NoPort}，这样若LISTEN_PORT不存在，使用默认值NoPort
-# 最终内容为 Listen="0.0.0.0:NoPort"，这样，即使不检查格式，net.Listen也会报错
-# 0.0.0.0表示监听本机所有ip地址，可以使用localhost访问
+# http server listening port
+# meaning of {env.LISTEN_PORT|8080}:
+# try to read key=LISTEN_PORT from env. default 8080
+# when publish, I use {env.LISTEN_PORT|NoPort}
+# Listen="0.0.0.0:NoPort", net.Listen will report error even if have not check the format
+# 0.0.0.0 represent all of the ip address locally，can be access by localhost
 #Listen="0.0.0.0:{env.LISTEN_PORT|NoPort}"
 Listen="0.0.0.0:{env.LISTEN_PORT|8080}"
 
-# 读超时时间，ms，可选配置
-# 请根据实际情况进行调整
+# ms, optional
 ReadTimeout=1000
  
-# 写超时时间（从请求读取完开始计算），ms，可选配置
-# 应该配置成服务的最大允许时间
-# 若使用超时中间件，超时中间件对应的超时时间不应该大于该值
-# 若要使用/debug/pprof功能，请设置一个大于30s的值
-# 请根据实际情况进行调整
+# ms, optional
+# should be the longest acceptable time
+# middleware should not be longger
 WriteTimeout=40000 # 40s
  
-# 空闲等待超时时间，ms，可选配置
-# 当设置keep-alives开启时(HTTP Server默认开启)，同一个tcp连接，读取下一个请求的等待时间
-# 若client 出现 connection reset by peer，可能和此参数有关
-# 请根据实际情况进行调整
+# ms, optional
 IdleTimeout=1000

@@ -14,7 +14,7 @@ import (
 )
 
 /**
- * @description: 后台启动路由分发
+ * @description: start http server and start listening
  * @param {*}
  * @return {*}
  */
@@ -22,7 +22,7 @@ func InitRouters() {
 	// init routers
 	// Routers.Init()
 
-	// 兜底路由
+	// safe router
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
 		io.WriteString(rw, "Hello! THis is Ziwei. Welcome to my website!")
 	})
