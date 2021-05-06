@@ -79,7 +79,7 @@ func NewApp(ctx context.Context, c *Config) *App {
 func (app *App) Start() error {
 	// 启动路由分发
 	httpapi.InitRouters()
-	// 启动erg3020数据库
+	// 启动数据库
 	mysql.InitClients()
 	// 启动日志记录
 	// logs.InitLoggers
