@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go-liziwei01-library/library/env"
+	"github.com/go-liziwei01-library/library/env"
 )
 
 // Conf 配置解析定义接口

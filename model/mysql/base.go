@@ -1,7 +1,10 @@
 package mysql
 
 import (
-	"go-liziwei01-library/library/mysql"
+	"context"
+	"fmt"
+
+	"github.com/go-liziwei01-library/library/mysql"
 )
 
 const (
@@ -13,7 +16,7 @@ var clients []*mysql.Client
 
 func InitClients() {
 	clients = append(clients, &mysql.Client{
-		DbName: SERVICE_CONF_DB_NEWAPP_LIZIWEI,
+		DbName:   SERVICE_CONF_DB_NEWAPP_LIZIWEI,
 		DbDriver: DB_DRIVER_NAME_MYSQL,
 	})
 }

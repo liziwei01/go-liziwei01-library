@@ -3,7 +3,7 @@ package error
 import (
 	"encoding/json"
 
-	errLib "go-liziwei01-library/library/error"
+	errLib "github.com/go-liziwei01-library/library/error"
 )
 
 const (
