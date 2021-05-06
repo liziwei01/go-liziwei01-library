@@ -1,11 +1,3 @@
-/*
- * @Author: 		liziwei01
- * @Date: 			2021-04-19 15:00:00
- * @LastEditTime: 	2021-04-19 15:00:00
- * @LastEditors: 	liziwei01
- * @Description: 	启动APP
- * @FilePath: 		github.com/liziwei01/go-liziwei01-library/bootstrap/bootstrap.go
- */
 package bootstrap
 
 import (
@@ -14,11 +6,11 @@ import (
 )
 
 /**
- * @description: 后台启动APP
+ * @description: start APP
  * @param {*}
  * @return {*}
  */
-func Init() {
+func Init(appConfPath string) {
 	// 解析应用配置
 	config, err := ParserAppConfig(appConfPath)
 	if err != nil {

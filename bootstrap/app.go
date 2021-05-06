@@ -10,10 +10,6 @@ import (
 	"github.com/liziwei01/go-liziwei01-library/model/mysql"
 )
 
-const (
-	appConfPath = "./conf/app.toml"
-)
-
 // Config app的配置
 // 默认对应 conf/app.toml
 type Config struct {
