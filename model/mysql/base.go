@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"go-liziwei01-library/library/mysql"
+	"github.com/go-liziwei01-library/library/mysql"
 )
 
 const (
@@ -32,4 +32,3 @@ func GetMysqlClient(ctx context.Context, serviceName string) (mysql.Client, erro
 	}
 	return nil, fmt.Errorf("cannot find db")
 }
-

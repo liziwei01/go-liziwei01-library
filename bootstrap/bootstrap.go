@@ -4,7 +4,7 @@
  * @LastEditTime: 	2021-04-19 15:00:00
  * @LastEditors: 	liziwei01
  * @Description: 	启动APP
- * @FilePath: 		go-liziwei01-library/bootstrap/bootstrap.go
+ * @FilePath: 		github.com/go-liziwei01-library/bootstrap/bootstrap.go
  */
 package bootstrap
 

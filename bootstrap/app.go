@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"go-liziwei01-library/httpapi"
-	"go-liziwei01-library/library/conf"
-	"go-liziwei01-library/library/env"
-	"go-liziwei01-library/model/mysql"
+	"github.com/go-liziwei01-library/httpapi"
+	"github.com/go-liziwei01-library/library/conf"
+	"github.com/go-liziwei01-library/library/env"
+	"github.com/go-liziwei01-library/model/mysql"
 )
 
 const (
