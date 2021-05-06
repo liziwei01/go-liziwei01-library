@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/liziwei01/go-liziwei01-library/httpapi"
 	"github.com/liziwei01/go-liziwei01-library/library/conf"
 	"github.com/liziwei01/go-liziwei01-library/library/env"
 	"github.com/liziwei01/go-liziwei01-library/model/mysql"
@@ -78,7 +77,7 @@ func NewApp(ctx context.Context, c *Config) *App {
 // Start 启动服务
 func (app *App) Start() error {
 	// 启动路由分发
-	httpapi.InitRouters()
+	// httpapi.InitRouters()
 	// 启动数据库
 	mysql.InitClients()
 	// 启动日志记录
