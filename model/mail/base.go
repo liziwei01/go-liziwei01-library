@@ -4,7 +4,7 @@
  * @LastEditTime: 	2021-04-19 17:00:00
  * @LastEditors: 	liziwei01
  * @Description: 	main
- * @FilePath: 		github.com/go-liziwei01-library/main.go
+ * @FilePath: 		github.com/Bill-xyz/go-liziwei01-library/main.go
  */
 
 package mail
@@ -20,7 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ses"
 
-	"github.com/go-liziwei01-library/library/conf"
+	"github.com/Bill-xyz/go-liziwei01-library/library/conf"
 )
 
 const (

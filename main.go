@@ -4,12 +4,12 @@
  * @LastEditTime: 	2021-04-19 15:00:00
  * @LastEditors: 	liziwei01
  * @Description: 	main
- * @FilePath: 		github.com/go-liziwei01-library/main.go
+ * @FilePath: 		github.com/Bill-xyz/go-liziwei01-library/main.go
  */
 package main
 
 import (
-	"github.com/go-liziwei01-library/bootstrap"
+	"github.com/Bill-xyz/go-liziwei01-library/bootstrap"
 )
 
 /**

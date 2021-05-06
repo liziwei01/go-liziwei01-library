@@ -10,7 +10,7 @@ go run main.go
 
 ## Use
 
-socket is under /github.com/go-liziwei01-library/httpapi package\
+socket is under /github.com/Bill-xyz/go-liziwei01-library/httpapi package\
 ip:port of online version is\
 localhost:8080
 
