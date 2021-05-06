@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "alias ll='ls -al'" >> ~/.bashrc
+source ~/.bashrc
+
+mv /home/work/go-liziwei01-library/commit-msg /home/work/go-liziwei01-library/.git/hooks/
+chmod u+x /home/work/go-liziwei01-library/.git/hooks/commit-msg
+
+hostname -i
+
+go run /home/work/go-liziwei01-library/main.go

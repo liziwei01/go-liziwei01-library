@@ -1,0 +1,10 @@
+ak = "AKIAXLWQPQRES3ACBVGU"
+sk = "BIAp0FGidtXu/W36NcWiDSM7XcB9h6iHiw5wU7LttVA4"
+region = "us-east-2"
+sesMail = "alssylk@gamil.com"
+
+[workmail]
+server = "email-smtp.us-east-2.amazonaws.com"
+port = 587
+pwd = "8:pBs8PWFh?FU77:feJk"
+user = "alssylk@gmail.com"
