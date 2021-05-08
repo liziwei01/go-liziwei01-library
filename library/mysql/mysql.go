@@ -255,7 +255,7 @@ func InsertCompiler(ctx context.Context, client Client, builder *InsertBuilder, 
 
 func InsertAllCompiler(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) string {
 	var (
-		query = "INSERT INTO " + builder.table + " ("
+		query = "INSERT " + builder.table + " ("
 	)
 
 	for _, v := range data {
