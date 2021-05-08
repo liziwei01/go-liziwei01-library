@@ -99,6 +99,15 @@ func (dao *client) Insert(ctx context.Context, tableName string, data map[string
 	return nil
 }
 
+func (dao *client) InsertAll(ctx context.Context, tableName string, data map[string]interface{}) error {
+	builder := NewInsertBuilder(tableName)
+	err := InsertAllWithBuilder(ctx, dao, builder, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func NewSelectBuilder(table string, where map[string]interface{}, fields []string) *SelectBuilder {
 	return &SelectBuilder{
 		table:  table,
@@ -130,6 +139,20 @@ func QueryWithBuilder(ctx context.Context, client Client, builder *SelectBuilder
 // InsertWithBuilder 传入一个 SQLBuilder 并执行 QueryContext
 func InsertWithBuilder(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) error {
 	query := InsertCompiler(ctx, client, builder, data)
+	db, err := sqlx.Connect(client.DbDriver(), client.UserName()+":"+client.UserPassword()+"@"+"tcp("+client.DbIp()+":"+client.DbPort()+")/"+client.DbName())
+	if err != nil {
+		return err
+	}
+	_, err = db.Queryx(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// InsertWithBuilder 传入一个 SQLBuilder 并执行 QueryContext
+func InsertAllWithBuilder(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) error {
+	query := InsertAllCompiler(ctx, client, builder, data)
 	db, err := sqlx.Connect(client.DbDriver(), client.UserName()+":"+client.UserPassword()+"@"+"tcp("+client.DbIp()+":"+client.DbPort()+")/"+client.DbName())
 	if err != nil {
 		return err
@@ -225,6 +248,20 @@ func InsertCompiler(ctx context.Context, client Client, builder *InsertBuilder, 
 	}
 
 	query = query[0:prefixLen+keysLen-2] + ") VALUES (" + query[prefixLen+keysLen:len(query)-2] + ")"
+	log.Printf("query: %s\n", query)
+	return query
+}
+
+func InsertAllCompiler(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) string {
+	var (
+		query = "INSERT INTO " + builder.table + " ("
+	)
+
+	for _, v := range data {
+		query = query + gconv.String(v) + ", "
+	}
+
+	query = query[:len(query)-2] + ")"
 	log.Printf("query: %s\n", query)
 	return query
 }
