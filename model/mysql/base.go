@@ -60,13 +60,13 @@ func setClient(serviceName string) (mysql.Client, error) {
 
 // 根据conf service 配置名读取文件配置初始化mysql client
 func initClient(serviceName string) (mysql.Client, error) {
-	var config mysql.Config
+	var config *mysql.Config
 	fileAbs, err := filepath.Abs(filepath.Join(configPath, mysqlPath, serviceName+prefix))
 	if err != nil {
 		return nil, err
 	}
 	if _, err := os.Stat(fileAbs); !os.IsNotExist(err) {
-		conf.Default.Parse(fileAbs, config)
+		conf.Default.Parse(fileAbs, &config)
 		client := mysql.New(config)
 		return client, nil
 	}

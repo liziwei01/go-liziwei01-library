@@ -10,8 +10,8 @@ type Config struct {
 	Port     string
 }
 
-func DefaultDbConf() Config {
-	return Config{
+func DefaultDbConf() *Config {
+	return &Config{
 		Username: "root",
 		Password: "123",
 		DbName:   "db_",

@@ -41,11 +41,11 @@ type InsertBuilder struct {
 }
 
 type client struct {
-	conf Config
+	conf *Config
 	dp   DbPool
 }
 
-func New(config Config) Client {
+func New(config *Config) Client {
 	c := &client{
 		conf: config,
 		dp:   DefaultDbPool(),
