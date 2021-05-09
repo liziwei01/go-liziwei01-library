@@ -7,7 +7,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogf/gf/util/gconv"
-	"github.com/jmoiron/sqlx"
 )
 
 type Client interface {
@@ -17,6 +16,14 @@ type Client interface {
 	DbPort() string
 	UserName() string
 	UserPassword() string
+	DbPool() DbPool
+	SetDbName(str string)
+	SetDbDriver(str string)
+	SetDbIp(str string)
+	SetDbPort(str string)
+	SetUserName(str string)
+	SetUserPassword(str string)
+	SetDbPool(dp DbPool)
 	Query(ctx context.Context, tableName string, where map[string]interface{}, columns []string, data interface{}) error
 	Insert(ctx context.Context, tableName string, data map[string]interface{}) error
 }
@@ -40,21 +47,27 @@ type client struct {
 	dbPort       string
 	userName     string
 	userPassword string
+	dp           DbPool
 }
 
 func New(dbName string, dbDriver string, dbIp string, dbPort string, userName string, userPassword string) Client {
-	return &client{
+	c := &client{
 		dbName:       dbName,
 		dbDriver:     dbDriver,
 		dbIp:         dbIp,
 		dbPort:       dbPort,
 		userName:     userName,
 		userPassword: userPassword,
+		dp:           DefaultDbPool(),
 	}
+	return c
 }
 
 func NewDefault() Client {
-	return &client{}
+	c := &client{
+		dp: DefaultDbPool(),
+	}
+	return c
 }
 
 func (c *client) DbName() string {
@@ -79,6 +92,38 @@ func (c *client) UserName() string {
 
 func (c *client) UserPassword() string {
 	return c.userPassword
+}
+
+func (c *client) DbPool() DbPool {
+	return c.dp
+}
+
+func (c *client) SetDbName(str string) {
+	c.dbName = str
+}
+
+func (c *client) SetDbDriver(str string) {
+	c.dbDriver = str
+}
+
+func (c *client) SetDbIp(str string) {
+	c.dbIp = str
+}
+
+func (c *client) SetDbPort(str string) {
+	c.dbPort = str
+}
+
+func (c *client) SetUserName(str string) {
+	c.userName = str
+}
+
+func (c *client) SetUserPassword(str string) {
+	c.userPassword = str
+}
+
+func (c *client) SetDbPool(dp DbPool) {
+	c.dp = dp
 }
 
 func (dao *client) Query(ctx context.Context, tableName string, where map[string]interface{}, columns []string, data interface{}) error {
@@ -116,7 +161,7 @@ func NewInsertBuilder(table string) *InsertBuilder {
 // QueryWithBuilder 传入一个 SQLBuilder 并执行 QueryContext
 func QueryWithBuilder(ctx context.Context, client Client, builder *SelectBuilder, data interface{}) error {
 	query := QueryCompiler(ctx, client, builder)
-	db, err := sqlx.Connect(client.DbDriver(), client.UserName()+":"+client.UserPassword()+"@"+"tcp("+client.DbIp()+":"+client.DbPort()+")/"+client.DbName())
+	db, err := client.DbPool().Connect(client)
 	if err != nil {
 		return err
 	}
@@ -130,7 +175,7 @@ func QueryWithBuilder(ctx context.Context, client Client, builder *SelectBuilder
 // InsertWithBuilder 传入一个 SQLBuilder 并执行 QueryContext
 func InsertWithBuilder(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) error {
 	query := InsertCompiler(ctx, client, builder, data)
-	db, err := sqlx.Connect(client.DbDriver(), client.UserName()+":"+client.UserPassword()+"@"+"tcp("+client.DbIp()+":"+client.DbPort()+")/"+client.DbName())
+	db, err := client.DbPool().Connect(client)
 	if err != nil {
 		return err
 	}
@@ -141,7 +186,7 @@ func InsertWithBuilder(ctx context.Context, client Client, builder *InsertBuilde
 	return nil
 }
 
-func beforeCompiler(ctx context.Context, builder *SelectBuilder) *SelectBuilder {
+func beforeSelect(ctx context.Context, builder *SelectBuilder) *SelectBuilder {
 	var (
 		equalSign = false
 	)
@@ -165,13 +210,22 @@ func beforeCompiler(ctx context.Context, builder *SelectBuilder) *SelectBuilder 
 	return builder
 }
 
+func beforeInsert(ctx context.Context, data map[string]interface{}) map[string]interface{} {
+	for k, v := range data {
+		if reflect.TypeOf(v) == reflect.TypeOf("") {
+			data[k] = "'" + gconv.String(data[k]) + "'"
+		}
+	}
+	return data
+}
+
 func QueryCompiler(ctx context.Context, client Client, builder *SelectBuilder) string {
 	var (
 		limitPar   []uint
 		orderbyPar string
 		query      = "SELECT"
 	)
-	builder = beforeCompiler(ctx, builder)
+	builder = beforeSelect(ctx, builder)
 	for k, v := range builder.fields {
 		if k == 0 {
 			query = query + " " + v
@@ -217,7 +271,7 @@ func InsertCompiler(ctx context.Context, client Client, builder *InsertBuilder, 
 		prefixLen = len(query)
 		keysLen   = 0
 	)
-
+	data = beforeInsert(ctx, data)
 	for k, v := range data {
 		query = query[0:prefixLen+keysLen] + k + ", " + query[prefixLen+keysLen:]
 		keysLen = keysLen + len(k) + len(", ")

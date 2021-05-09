@@ -1,12 +1,3 @@
-/*
- * @Author: 		liziwei01
- * @Date: 			2021-04-19 17:00:00
- * @LastEditTime: 	2021-04-19 17:00:00
- * @LastEditors: 	liziwei01
- * @Description: 	main
- * @FilePath: 		github.com/liziwei01/go-liziwei01-library/main.go
- */
-
 package mail
 
 import (
