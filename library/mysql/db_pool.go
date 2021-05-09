@@ -1,6 +1,15 @@
 package mysql
 
-import "github.com/jmoiron/sqlx"
+import (
+	"sync"
+
+	"github.com/jmoiron/sqlx"
+)
+
+var (
+	// 初始化互斥锁
+	initMux sync.Mutex
+)
 
 type DbPool interface {
 	Connect(client Client) (*sqlx.DB, error)
@@ -8,8 +17,7 @@ type DbPool interface {
 }
 
 type dbPool struct {
-	dbName    []string
-	databases []*sqlx.DB
+	databases map[string]*sqlx.DB
 }
 
 func DefaultDbPool() DbPool {
@@ -17,6 +25,8 @@ func DefaultDbPool() DbPool {
 }
 
 func (dp *dbPool) Connect(client Client) (*sqlx.DB, error) {
+	initMux.Lock()
+	defer initMux.Unlock()
 	if db := dp.GetDb(client.DbName()); db != nil {
 		return db, nil
 	}
@@ -24,16 +34,13 @@ func (dp *dbPool) Connect(client Client) (*sqlx.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	dp.dbName = append(dp.dbName, client.DbName())
-	dp.databases = append(dp.databases, db)
+	dp.databases[client.DbName()] = db
 	return db, nil
 }
 
 func (dp *dbPool) GetDb(db string) *sqlx.DB {
-	for k, v := range dp.dbName {
-		if v == db {
-			return dp.databases[k]
-		}
+	if sqlxDb, has := dp.databases[db]; has {
+		return sqlxDb
 	}
 	return nil
 }
