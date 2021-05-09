@@ -34,6 +34,9 @@ func (dp *dbPool) Connect(client Client) (*sqlx.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	if dp.databases == nil {
+		dp.databases = make(map[string]*sqlx.DB)
+	}
 	dp.databases[client.DbName()] = db
 	return db, nil
 }

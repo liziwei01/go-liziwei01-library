@@ -22,17 +22,17 @@ var (
 	// 配置文件根路径
 	configPath = env.Default.ConfDir()
 	// mysql client map, client采用单例模式
-	clients []mysql.Client
+	clients map[string]mysql.Client
 	// 初始化互斥锁
 	initMux sync.Mutex
 )
 
 // GetMysqlClient 获取创建
 func GetMysqlClient(ctx context.Context, serviceName string) (mysql.Client, error) {
-	// 先尝试获取
-	for _, v := range clients {
-		if v.DbName() == serviceName {
-			return v, nil
+	// 先尝试从单例map中获取
+	if client, hasSet := clients[serviceName]; hasSet {
+		if client != nil {
+			return client, nil
 		}
 	}
 	// 没有则重新设置
@@ -51,8 +51,11 @@ func setClient(serviceName string) (mysql.Client, error) {
 	// 初始化
 	client, err := initClient(serviceName)
 	if err == nil {
+		if clients == nil {
+			clients = make(map[string]mysql.Client)
+		}
 		// 添加
-		clients = append(clients, client)
+		clients[serviceName] = client
 		return client, nil
 	}
 	return nil, err
