@@ -41,57 +41,48 @@ type InsertBuilder struct {
 }
 
 type client struct {
-	dbName       string
-	dbDriver     string
-	dbIp         string
-	dbPort       string
-	userName     string
-	userPassword string
-	dp           DbPool
+	conf Config
+	dp   DbPool
 }
 
-func New(dbName string, dbDriver string, dbIp string, dbPort string, userName string, userPassword string) Client {
+func New(config Config) Client {
 	c := &client{
-		dbName:       dbName,
-		dbDriver:     dbDriver,
-		dbIp:         dbIp,
-		dbPort:       dbPort,
-		userName:     userName,
-		userPassword: userPassword,
-		dp:           DefaultDbPool(),
+		conf: config,
+		dp:   DefaultDbPool(),
 	}
 	return c
 }
 
 func NewDefault() Client {
 	c := &client{
-		dp: DefaultDbPool(),
+		conf: DefaultDbConf(),
+		dp:   DefaultDbPool(),
 	}
 	return c
 }
 
 func (c *client) DbName() string {
-	return c.dbName
+	return c.conf.DbName
 }
 
 func (c *client) DbDriver() string {
-	return c.dbDriver
+	return c.conf.DbDriver
 }
 
 func (c *client) DbIp() string {
-	return c.dbIp
+	return c.conf.Host
 }
 
 func (c *client) DbPort() string {
-	return c.dbPort
+	return c.conf.Port
 }
 
 func (c *client) UserName() string {
-	return c.userName
+	return c.conf.Username
 }
 
 func (c *client) UserPassword() string {
-	return c.userPassword
+	return c.conf.Password
 }
 
 func (c *client) DbPool() DbPool {
@@ -99,27 +90,27 @@ func (c *client) DbPool() DbPool {
 }
 
 func (c *client) SetDbName(str string) {
-	c.dbName = str
+	c.conf.DbName = str
 }
 
 func (c *client) SetDbDriver(str string) {
-	c.dbDriver = str
+	c.conf.DbDriver = str
 }
 
 func (c *client) SetDbIp(str string) {
-	c.dbIp = str
+	c.conf.Host = str
 }
 
 func (c *client) SetDbPort(str string) {
-	c.dbPort = str
+	c.conf.Port = str
 }
 
 func (c *client) SetUserName(str string) {
-	c.userName = str
+	c.conf.Username = str
 }
 
 func (c *client) SetUserPassword(str string) {
-	c.userPassword = str
+	c.conf.Password = str
 }
 
 func (c *client) SetDbPool(dp DbPool) {

@@ -8,7 +8,6 @@ import (
 	"github.com/liziwei01/go-liziwei01-library/httpapi"
 	"github.com/liziwei01/go-liziwei01-library/library/conf"
 	"github.com/liziwei01/go-liziwei01-library/library/env"
-	"github.com/liziwei01/go-liziwei01-library/model/mysql"
 )
 
 const (
@@ -64,7 +63,7 @@ type App struct {
 	close  func()
 }
 
-// NewApp establish an APP 
+// NewApp establish an APP
 func NewApp(ctx context.Context, c *Config) *App {
 	ctxRet, cancel := context.WithCancel(ctx)
 	app := &App{
@@ -79,8 +78,6 @@ func NewApp(ctx context.Context, c *Config) *App {
 func (app *App) Start() error {
 	// start distribute routers
 	httpapi.InitRouters()
-	// start mysql database
-	mysql.InitClients()
 	// start record logs
 	// logs.InitLoggers
 	err := http.ListenAndServe(app.config.HTTPServer.Listen, nil)
