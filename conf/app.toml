@@ -1,7 +1,7 @@
 # app.toml: app main conf
  
 # can be read by env.AppName() method
-APPName = "github.com/liziwei01/go-liziwei01-library"
+APPName = "go-liziwei01-library"
  
 # run mod
 # debug    : corresponds to env.RunModeDebug
