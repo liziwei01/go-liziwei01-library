@@ -4,7 +4,7 @@ region = "us-east-2"
 sesMail = "alssylk@gamil.com"
 
 [workmail]
-server = "email-smtp.us-east-2.amazonaws.com"
+server = ""
 port = 587
-pwd = "8:pBs8PWFh?FU77:feJk"
+pwd = ""
 user = "alssylk@gmail.com"
