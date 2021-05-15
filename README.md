@@ -12,9 +12,7 @@ go run main.go
 
 ## Use
 
-socket is under /github.com/liziwei01/go-liziwei01-library/httpapi package\
-ip:port of online version is\
-localhost:8080
+import "github.com/liziwei01/go-liziwei01-library"
 
 ## License
 
