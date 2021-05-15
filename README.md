@@ -1,4 +1,5 @@
 # go-liziwei01-library
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 This is a school project base written by liziwei from CUHK(SZ)
 
