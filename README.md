@@ -24,7 +24,7 @@ go run main.go
 
 conf file under ./conf/servicer\
 SAMPLE:\
-db_liziwei01.toml\
+db_liziwei01.toml
 
 ```bash
 Username = "root"
@@ -46,23 +46,34 @@ type PaperSearchParams struct {
     EndTime    int64  `json:"end_time"`
 }
 
-func GetPaperSlice(ctx context.Context, params PaperSearchParams)
-# init and link the mysql database db_liziwei01
-var res []paperModel.PaperInfo
-mysql.GetMysqlClient(ctx, "db_liziwei01")
-where := map[string]interface{}{
-        "_orderby":        "score desc",
-        "_limit":          []uint{0, 10},
-        "publish_time >=": params.StartTime,
-        "publish_time <=": params.EndTime,
+type PaperInfo struct {
+    Title           string `db:"title" json:"title"`
+    Authors         string `db:"author" json:"authors"`
+    PublishTime     int64  `db:"publish_time" json:"publish_time"`
+}
+
+func GetPaperSlice(ctx context.Context, params PaperSearchParams) ([]PaperInfo, error) {
+    # init and link the mysql database db_liziwei01
+    var res []PaperInfo
+    mysql.GetMysqlClient(ctx, "db_liziwei01")
+    where := map[string]interface{}{
+            "_orderby":        "score desc",
+            "_limit":          []uint{0, 10},
+            "publish_time >=": params.StartTime,
+            "publish_time <=": params.EndTime,
+        }
+    columns := []string{"title", "authors"}
+    # query the 
+    # table `tb_paper_info` 
+    # for `columns` 
+    # with `where` and
+    # data will be stored in `res` slice
+    err = client.Query(ctx, "tb_paper_info", where, columns, &res)
+    if err != nil {
+        return nil, err
     }
-columns := []string{"title", "authors"}
-# query the 
-# table `tb_paper_info` 
-# for `columns` 
-# with `where` and
-# data will be stored in `res` slice
-err = client.Query(ctx, "tb_paper_info", where, columns, &res)
+    return res, nil
+}
 ```
 
 ### ghttp
@@ -94,7 +105,7 @@ func GetPaperList(response http.ResponseWriter, request *http.Request) {
         g.Write(params, errBase.ErrorNoClient, err)
     }
     # GetPaperSlice get data from mysql and returns a data slice `res`
-    res, err := GetPaperSlice(ctx, g)
+    res, err := GetPaperSlice(ctx, params)
     if err != nil {
         g.Write(res, errBase.ErrorNoServer, err)
     }
@@ -117,6 +128,11 @@ curl localhost:8080?start_time=0&end_time=100000
 # you will get json return like this
 {
     "data": # the data slice
+        [{
+            "title": "something",
+            "author": "somebody",
+            "publish_time": "10000000"
+        }]
     "errno": # error number
     "errmsg": # error message
 }
