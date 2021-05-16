@@ -1,4 +1,5 @@
 # go-liziwei01-library
+
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 This is a school project base written by liziwei from CUHK(SZ)
@@ -19,7 +20,8 @@ go run main.go
 
 ## Use
 
-# mysql
+### mysql
+
 conf file under ./conf/servicer\
 SAMPLE:\
 db_liziwei01.toml\
@@ -63,11 +65,10 @@ columns := []string{"title", "authors"}
 err = client.Query(ctx, "tb_paper_info", where, columns, &res)
 ```
 
-# ghttp
+### ghttp
 
 ```bash
 import (
-    "log"
     "context"
     "net/http"
     errBase "github.com/liziwei01/go-liziwei01-library/model/error"
@@ -80,33 +81,44 @@ type PaperSearchParams struct {
 }
 
 func init() {
+    _ = http.ListenAndServe("0.0.0.0:8080", nil)
     http.HandleFunc("/paperList", GetPaperList)
-}
-
-func getPaperInput(ctx context.Context, g ghttp.Ghttp) {
-    return PaperSearchParams{
-        EndTime:    g.Request().URL.Query().Get("end_time"),
-        Journal:    g.Request().URL.Query().Get("start_time"),
-    }
 }
 
 func GetPaperList(response http.ResponseWriter, request *http.Request) {
     # initialize ghttp
-    g := ghttp.Default((*ghttp.Request)(&request), (*ghttp.Response)(&response))
+    g := ghttp.Default(&request, &response)
     # get front end params
     params, err := getPaperInput(ctx, g)
     if err != nil {
-        ghttp.Write(g, params, errBase.ErrorNoClient, err)
-        log.Fatalln(err)
+        g.Write(params, errBase.ErrorNoClient, err)
     }
     # GetPaperSlice get data from mysql and returns a data slice `res`
     res, err := GetPaperSlice(ctx, g)
     if err != nil {
-        ghttp.Write(g, res, errBase.ErrorNoServer, err)
-        log.Fatalln(err)
+        g.Write(res, errBase.ErrorNoServer, err)
     }
-    # return 
-    ghttp.Write(g, res, errBase.ErrorNoSuccess, err)
+    # return
+    g.Write(res, errBase.ErrorNoSuccess, err)
+}
+
+func getPaperInput(ctx context.Context, g ghttp.Ghttp) {
+    return PaperSearchParams{
+        # also support g.Post()
+        EndTime:    g.Get("end_time"),
+        Journal:    g.Get("start_time"),
+    }
+}
+```
+
+```bash
+# when you 
+curl localhost:8080?start_time=0&end_time=100000
+# you will get json return like this
+{
+    "data": # the data slice
+    "errno": # error number
+    "errmsg": # error message
 }
 ```
 
