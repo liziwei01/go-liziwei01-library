@@ -9,6 +9,9 @@ import (
 type Ghttp interface {
 	Request() **http.Request
 	Response() *http.ResponseWriter
+	Get(str string) string
+	Post(str string) string
+	Write(data interface{}, errno int, err error)
 }
 
 type ghttp struct {
@@ -33,11 +36,11 @@ func (g *ghttp) Response() *http.ResponseWriter {
 	return g.response
 }
 
-func Get(g Ghttp, str string) string {
+func (g *ghttp) Get(str string) string {
 	return (**g.Request()).URL.Query().Get(str)
 }
 
-func Post(g Ghttp, str string) string {
+func (g *ghttp) Post(str string) string {
 	(**g.Request()).ParseForm()
 	for k, v := range (**g.Request()).PostForm {
 		if k == str {
@@ -47,7 +50,7 @@ func Post(g Ghttp, str string) string {
 	return ""
 }
 
-func Write(g Ghttp, data interface{}, errno int, err error) {
+func (g *ghttp) Write(data interface{}, errno int, err error) {
 	switch errno {
 	case errBase.ErrorNoSuccess:
 		(*g.Response()).WriteHeader(200)
@@ -65,4 +68,8 @@ func Write(g Ghttp, data interface{}, errno int, err error) {
 		return
 	}
 	(*g.Response()).Write(errBase.Marshal(data, errno, ""))
+}
+
+func (g *ghttp) SetAccessControlAllowOrigin(allow string) {
+	(*g.response).Header().Set("Access-Control-Allow-Origin", allow)
 }
