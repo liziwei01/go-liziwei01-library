@@ -19,7 +19,31 @@ go run main.go
 
 ## Use
 
-import "github.com/liziwei01/go-liziwei01-library"
+# mysql
+conf file under ./conf/servicer\
+SAMPLE:\
+db_liziwei01.toml\
+
+```bash
+Username = "root"
+Password = "liziwei01"
+DbName = "db_liziwei01"
+DbDriver = "mysql"
+Host = "localhost"
+Port = 3306
+```
+
+```bash
+import "github.com/liziwei01/go-liziwei01-library/model/mysql"
+# init and link the database
+mysql.GetMysqlClient(ctx, "db_liziwei01")
+where := map[string]interface{}{
+&emsp;&emsp;"_orderby":        "score desc",
+&emsp;&emsp;"_limit":          []uint{intStart, params.PageLength},
+&emsp;&emsp;"publish_time >=": params.StartTime,
+&emsp;&emsp;"publish_time <=": params.EndTime,
+&emsp;}
+```
 
 ## License
 

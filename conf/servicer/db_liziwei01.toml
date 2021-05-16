@@ -1,6 +1,6 @@
-Username    = "root"
-Password    = "liziwei01"
-DbName      = "db_liziwei01"
-DbDriver    = "mysql"
+Username = "root"
+Password = "liziwei01"
+DbName = "db_liziwei01"
+DbDriver = "mysql"
 Host = "localhost"
 Port = 3306
