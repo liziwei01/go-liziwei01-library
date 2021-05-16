@@ -121,10 +121,15 @@ func getPaperInput(ctx context.Context, g ghttp.Ghttp) {
 }
 ```
 
+when you
+
 ```bash
-# when you 
 curl localhost:8080?start_time=0&end_time=100000
-# you will get json return like this
+```
+
+you will get json return like this
+
+```bash
 {
     "data": # the data slice
         [{
