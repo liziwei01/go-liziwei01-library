@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/aws/aws-sdk-go v1.38.34
+	github.com/baidu/go-lib v0.0.0-20210316014414-55daa983069e
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gogf/gf v1.15.7
