@@ -22,4 +22,6 @@
 /vendor/
 /Godeps/
 
+# log files
+/log/ 
 # End of https://www.toptal.com/developers/gitignore/api/go
