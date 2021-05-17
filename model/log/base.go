@@ -2,15 +2,24 @@ package log
 
 import (
 	lib "github.com/baidu/go-lib/log"
-	"github.com/baidu/go-lib/log/log4go"
 )
 
-func InitLog(programName string, level string) (log4go.Logger, error) {
-	var Logger log4go.Logger
-	// lib.Init("test", "INFO", "./log", true, "M", 5)
-	err := lib.Init(programName, level, "./log", true, "M", 5)
+func Init(programName string) error {
+	err := lib.Init(programName, "INFO", "./log", true, "H", 5)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return Logger, nil
+	return nil
+}
+
+func Info(arg0 interface{}, args ...interface{}) {
+	lib.Logger.Info(arg0, args...)
+}
+
+func Warn(arg0 interface{}, args ...interface{}) {
+	lib.Logger.Warn(arg0, args...)
+}
+
+func Error(arg0 interface{}, args ...interface{}) {
+	lib.Logger.Error(arg0, args...)
 }
