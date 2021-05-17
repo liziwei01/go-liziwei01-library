@@ -4,6 +4,14 @@ import (
 	lib "github.com/baidu/go-lib/log"
 )
 
+// type LogFunc func(arg0 interface{}, args ...interface{})
+
+// var (
+// 	InfoFunc  LogFunc = lib.Logger.Info
+// 	WarnFunc  LogFunc = lib.Logger.Warn
+// 	ErrorFunc LogFunc = lib.Logger.Error
+// )
+
 func Init(programName string) error {
 	err := lib.Init(programName, "INFO", "./log", true, "H", 5)
 	if err != nil {
@@ -12,14 +20,14 @@ func Init(programName string) error {
 	return nil
 }
 
-func Info(arg0 interface{}, args ...interface{}) {
-	lib.Logger.Info(arg0, args...)
+func Info() func(arg0 interface{}, args ...interface{}) {
+	return lib.Logger.Info
 }
 
-func Warn(arg0 interface{}, args ...interface{}) {
-	lib.Logger.Warn(arg0, args...)
+func Warn() func(arg0 interface{}, args ...interface{}) error {
+	return lib.Logger.Warn
 }
 
-func Error(arg0 interface{}, args ...interface{}) {
-	lib.Logger.Error(arg0, args...)
+func Error() func(arg0 interface{}, args ...interface{}) error {
+	return lib.Logger.Error
 }
