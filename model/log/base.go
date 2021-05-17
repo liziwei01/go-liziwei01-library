@@ -4,6 +4,13 @@ import (
 	lib "github.com/baidu/go-lib/log"
 )
 
+var (
+	logger = &lib.Logger
+	Info   = logger.Info
+	Warn   = logger.Warn
+	Error  = logger.Error
+)
+
 func Init(programName string) error {
 	return setLog(programName)
 }
