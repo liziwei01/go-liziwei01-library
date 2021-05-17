@@ -8,6 +8,7 @@ import (
 	"github.com/liziwei01/go-liziwei01-library/httpapi"
 	"github.com/liziwei01/go-liziwei01-library/library/conf"
 	"github.com/liziwei01/go-liziwei01-library/library/env"
+	"github.com/liziwei01/go-liziwei01-library/model/logit"
 )
 
 const (
@@ -79,7 +80,10 @@ func (app *App) Start() error {
 	// start distribute routers
 	httpapi.InitRouters()
 	// start record logs
-	// logs.InitLoggers
+	logit.Init("ziweiapp")
+	logit.Logger.Info("APP START")
+	// start listening to port
+	logit.Logger.Info("APP listening at: %s", app.config.HTTPServer.Listen)
 	err := http.ListenAndServe(app.config.HTTPServer.Listen, nil)
 	if err != nil {
 		return err

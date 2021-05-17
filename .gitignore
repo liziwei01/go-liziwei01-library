@@ -22,6 +22,8 @@
 /vendor/
 /Godeps/
 
+### my own .gitignore ###
 # log files
 /log/ 
+
 # End of https://www.toptal.com/developers/gitignore/api/go

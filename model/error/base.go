@@ -19,6 +19,12 @@ const (
 	ErrorNoSign     = -4
 )
 
+// return a json like 
+// {
+// 	"data":   data,
+// 	"errmsg": e.ErrMsg(),
+// 	"errno":  e.ErrNo(),
+// }
 func Marshal(data interface{}, errno int, errmsg string) []byte {
 	switch errno {
 	case ErrorNoSuccess:
@@ -42,6 +48,13 @@ func Marshal(data interface{}, errno int, errmsg string) []byte {
 	return ret
 }
 
+
+// return a json like 
+// {
+// 	"data":   data,
+// 	"errmsg": success,
+// 	"errno":  0,
+// }
 func MarshalData(data interface{}) []byte {
 	e := errLib.NewDefault()
 	ret, _ := json.Marshal(map[string]interface{}{

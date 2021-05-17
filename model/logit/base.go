@@ -8,6 +8,7 @@ var (
 	Logger = &lib.Logger
 )
 
+// all the log are recorded under ./log
 func Init(programName string) error {
 	return initLog(programName)
 }

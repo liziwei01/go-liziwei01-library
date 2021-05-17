@@ -13,7 +13,7 @@ import (
 )
 
 /**
- * @description: main函数
+ * @description: main
  * @param {*}
  * @return {*}
  */
