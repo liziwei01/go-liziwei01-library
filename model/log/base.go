@@ -2,13 +2,14 @@ package log
 
 import (
 	lib "github.com/baidu/go-lib/log"
+	"github.com/baidu/go-lib/log/log4go"
 )
 
 var (
-	logger = &lib.Logger
-	Info   = logger.Info
-	Warn   = logger.Warn
-	Error  = logger.Error
+	Logger log4go.Logger
+	Info   = Logger.Info
+	Warn   = Logger.Warn
+	Error  = Logger.Error
 )
 
 func Init(programName string) error {
