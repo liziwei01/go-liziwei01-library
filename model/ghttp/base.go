@@ -1,3 +1,11 @@
+/*
+ * @Author: liziwei01
+ * @Date: 2021-04-29 15:14:03
+ * @LastEditors: liziwei01
+ * @LastEditTime: 2021-05-30 02:35:36
+ * @Description: http model
+ * @FilePath: /github.com/liziwei01/go-liziwei01-library/model/ghttp/base.go
+ */
 package ghttp
 
 import (
@@ -19,6 +27,12 @@ type ghttp struct {
 	response *http.ResponseWriter
 }
 
+/**
+ * @description: return a default http model
+ * @param {**http.Request} request
+ * @param {*http.ResponseWriter} response
+ * @return {*}
+ */
 func Default(request **http.Request, response *http.ResponseWriter) Ghttp {
 	(*response).Header().Set("content-type", "text/json")
 	(*response).Header().Set("Access-Control-Allow-Origin", "*")
@@ -28,18 +42,38 @@ func Default(request **http.Request, response *http.ResponseWriter) Ghttp {
 	}
 }
 
+/**
+ * @description: Request
+ * @param {*}
+ * @return {*}
+ */
 func (g *ghttp) Request() **http.Request {
 	return g.request
 }
 
+/**
+ * @description: Response
+ * @param {*}
+ * @return {*}
+ */
 func (g *ghttp) Response() *http.ResponseWriter {
 	return g.response
 }
 
+/**
+ * @description: get variables in url
+ * @param {string} str
+ * @return {*}
+ */
 func (g *ghttp) Get(str string) string {
 	return (**g.Request()).URL.Query().Get(str)
 }
 
+/**
+ * @description: get postform variables
+ * @param {string} str
+ * @return {*}
+ */
 func (g *ghttp) Post(str string) string {
 	(**g.Request()).ParseForm()
 	for k, v := range (**g.Request()).PostForm {
@@ -50,6 +84,13 @@ func (g *ghttp) Post(str string) string {
 	return ""
 }
 
+/**
+ * @description: write into response
+ * @param {interface{}} data
+ * @param {int} errno
+ * @param {error} err
+ * @return {*}
+ */
 func (g *ghttp) Write(data interface{}, errno int, err error) {
 	switch errno {
 	case errBase.ErrorNoSuccess:
@@ -70,6 +111,11 @@ func (g *ghttp) Write(data interface{}, errno int, err error) {
 	(*g.Response()).Write(errBase.Marshal(data, errno, ""))
 }
 
+/**
+ * @description: customize AccessControlAllowOrigin
+ * @param {string} allow
+ * @return {*}
+ */
 func (g *ghttp) SetAccessControlAllowOrigin(allow string) {
 	(*g.response).Header().Set("Access-Control-Allow-Origin", allow)
 }

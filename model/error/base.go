@@ -1,3 +1,11 @@
+/*
+ * @Author: liziwei01
+ * @Date: 2021-04-29 15:14:03
+ * @LastEditors: liziwei01
+ * @LastEditTime: 2021-05-30 02:44:12
+ * @Description: error model
+ * @FilePath: /github.com/liziwei01/go-liziwei01-library/model/error/base.go
+ */
 package error
 
 import (
@@ -19,12 +27,19 @@ const (
 	ErrorNoSign     = -4
 )
 
-// return a json like 
-// {
-// 	"data":   data,
-// 	"errmsg": e.ErrMsg(),
-// 	"errno":  e.ErrNo(),
-// }
+/**
+* @description: could use error number to auto fill message, but also customize
+* 				return a json like
+* 				{
+* 				"data":   data,
+* 				"errmsg": e.ErrMsg(),
+* 				"errno":  e.ErrNo(),
+* 				}
+* @param {interface{}} data
+* @param {int} errno
+* @param {string} errmsg
+* @return {*}
+ */
 func Marshal(data interface{}, errno int, errmsg string) []byte {
 	switch errno {
 	case ErrorNoSuccess:
@@ -37,9 +52,10 @@ func Marshal(data interface{}, errno int, errmsg string) []byte {
 		errmsg = ErrorMsgServer
 	case ErrorNoSign:
 		errmsg = ErrorMsgSign
+	default:
+		// do nothing
 	}
 	e := errLib.New(errLib.ErrNo(errno), errLib.ErrMsg(errmsg))
-	errLib.Append(e, errLib.ErrMsg(errmsg))
 	ret, _ := json.Marshal(map[string]interface{}{
 		"data":   data,
 		"errmsg": e.ErrMsg(),
@@ -48,19 +64,17 @@ func Marshal(data interface{}, errno int, errmsg string) []byte {
 	return ret
 }
 
-
-// return a json like 
-// {
-// 	"data":   data,
-// 	"errmsg": success,
-// 	"errno":  0,
-// }
+/**
+* @description: if no error, use this to write data to response
+* 				return a json like
+* 				{
+* 				"data":   data,
+* 				"errmsg": "success",
+* 				"errno":  0,
+* 				}
+ * @param {interface{}} data
+ * @return {*}
+*/
 func MarshalData(data interface{}) []byte {
-	e := errLib.NewDefault()
-	ret, _ := json.Marshal(map[string]interface{}{
-		"data":   data,
-		"errmsg": e.ErrMsg(),
-		"errno":  e.ErrNo(),
-	})
-	return ret
+	return Marshal(data, 0, "")
 }

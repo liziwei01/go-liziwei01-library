@@ -1,10 +1,10 @@
 /*
- * @Author: 		liziwei01
- * @Date: 			2021-04-19 15:00:00
- * @LastEditTime: 	2021-04-19 15:00:00
- * @LastEditors: 	liziwei01
- * @Description: 	start http server and start listening
- * @FilePath: 		github.com/liziwei01/go-liziwei01-library/httpapi/httpapi.go
+ * @Author: liziwei01
+ * @Date: 2021-04-19 15:00:00
+ * @LastEditTime: 2021-05-30 02:29:51
+ * @LastEditors: liziwei01
+ * @Description: start http server and start listening
+ * @FilePath: /github.com/liziwei01/go-liziwei01-library/httpapi/routers.go
  */
 package httpapi
 

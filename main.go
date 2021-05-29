@@ -1,10 +1,10 @@
 /*
- * @Author: 		liziwei01
- * @Date: 			2021-04-19 15:00:00
- * @LastEditTime: 	2021-04-19 15:00:00
- * @LastEditors: 	liziwei01
- * @Description: 	main
- * @FilePath: 		github.com/liziwei01/go-liziwei01-library/main.go
+ * @Author: liziwei01
+ * @Date: 2021-04-19 15:00:00
+ * @LastEditTime: 2021-05-30 02:32:09
+ * @LastEditors: liziwei01
+ * @Description: main
+ * @FilePath: /github.com/liziwei01/go-liziwei01-library/main.go
  */
 package main
 

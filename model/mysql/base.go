@@ -1,3 +1,11 @@
+/*
+ * @Author: liziwei01
+ * @Date: 2021-05-29 15:14:03
+ * @LastEditors: liziwei01
+ * @LastEditTime: 2021-05-30 02:32:54
+ * @Description: mysql model
+ * @FilePath: /github.com/liziwei01/go-liziwei01-library/model/mysql/base.go
+ */
 package mysql
 
 import (
@@ -27,7 +35,12 @@ var (
 	initMux sync.Mutex
 )
 
-// GetMysqlClient get 
+/**
+ * @description:
+ * @param {context.Context} ctx
+ * @param {string} serviceName
+ * @return {*}
+ */
 func GetMysqlClient(ctx context.Context, serviceName string) (mysql.Client, error) {
 	// try to get from single instance map
 	if client, hasSet := clients[serviceName]; hasSet {
@@ -43,7 +56,11 @@ func GetMysqlClient(ctx context.Context, serviceName string) (mysql.Client, erro
 	return nil, err
 }
 
-// init mysql client，considering concurrent set, lock
+/**
+ * @description: init mysql client，considering concurrent set, lock
+ * @param {string} serviceName
+ * @return {*}
+ */
 func setClient(serviceName string) (mysql.Client, error) {
 	// 互斥锁
 	initMux.Lock()
@@ -61,7 +78,11 @@ func setClient(serviceName string) (mysql.Client, error) {
 	return nil, err
 }
 
-// according to conf service, read conf from conf file to init mysql client
+/**
+ * @description: according to conf service, read conf from conf file to init mysql client
+ * @param {string} serviceName
+ * @return {*}
+ */
 func initClient(serviceName string) (mysql.Client, error) {
 	var config *mysql.Config
 	fileAbs, err := filepath.Abs(filepath.Join(configPath, mysqlPath, serviceName+prefix))
