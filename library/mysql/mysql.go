@@ -221,7 +221,7 @@ func QueryCompiler(ctx context.Context, client Client, builder *SelectBuilder) s
 		if k == 0 {
 			query = query + " " + v
 		} else {
-			query = ", " + query + " " + v
+			query = query + ", " + v
 		}
 	}
 	query = query + " FROM " + builder.table + " WHERE "
