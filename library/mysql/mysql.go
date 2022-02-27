@@ -26,6 +26,7 @@ type Client interface {
 	SetDbPool(dp DbPool)
 	Query(ctx context.Context, tableName string, where map[string]interface{}, columns []string, data interface{}) error
 	Insert(ctx context.Context, tableName string, data map[string]interface{}) error
+	InsertNoLog(ctx context.Context, tableName string, data map[string]interface{}) error
 }
 
 // SelectBuilder 默认的select sql builder
@@ -135,6 +136,15 @@ func (dao *client) Insert(ctx context.Context, tableName string, data map[string
 	return nil
 }
 
+func (dao *client) InsertNoLog(ctx context.Context, tableName string, data map[string]interface{}) error {
+	builder := NewInsertBuilder(tableName)
+	err := InsertWithBuilder(ctx, dao, builder, data, false)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func NewSelectBuilder(table string, where map[string]interface{}, fields []string) *SelectBuilder {
 	return &SelectBuilder{
 		table:  table,
@@ -164,8 +174,8 @@ func QueryWithBuilder(ctx context.Context, client Client, builder *SelectBuilder
 }
 
 // InsertWithBuilder 传入一个 SQLBuilder 并执行 QueryContext
-func InsertWithBuilder(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) error {
-	query := InsertCompiler(ctx, client, builder, data)
+func InsertWithBuilder(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}, hasLog ...bool) error {
+	query := InsertCompiler(ctx, client, builder, data, hasLog...)
 	db, err := client.DbPool().Connect(client)
 	if err != nil {
 		return err
@@ -256,7 +266,7 @@ func QueryCompiler(ctx context.Context, client Client, builder *SelectBuilder) s
 	return query
 }
 
-func InsertCompiler(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}) string {
+func InsertCompiler(ctx context.Context, client Client, builder *InsertBuilder, data map[string]interface{}, hasLog ...bool) string {
 	var (
 		query     = "INSERT " + builder.table + " ("
 		prefixLen = len(query)
@@ -270,7 +280,12 @@ func InsertCompiler(ctx context.Context, client Client, builder *InsertBuilder, 
 	}
 
 	query = query[0:prefixLen+keysLen-2] + ") VALUES (" + query[prefixLen+keysLen:len(query)-2] + ")"
-	log.Printf("query: %s\n", query)
+	
+	if len(hasLog) == 0 {
+		log.Printf("query: %s\n", query)
+	} else if hasLog[0] == true {
+		log.Printf("query: %s\n", query)
+	}
 	return query
 }
 
